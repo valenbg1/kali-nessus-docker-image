@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 # These variables probably need to be changed
-NESSUS_ACTIVATION_CODE="AAAA-BBBB-CCCC-DDDD"
-NESSUS_DEB_NAME="Nessus-10.1.2-debian6_amd64.deb"
+NESSUS_DEB_NAME="Nessus-10.6.0-debian10_amd64.deb"
 NESSUS_PASSWORD="root"
-NESSUS_URL='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/16111/download?i_agree_to_tenable_license_agreement=true'
+NESSUS_URL='https://www.tenable.com/downloads/api/v2/pages/nessus/files/Nessus-10.6.0-debian10_amd64.deb'
 NESSUS_USERNAME="toor"
 
 # Other config variables with suitable default values
-INSTALL_EXTRA_PACKAGES="bash-completion testssl.sh gobuster curl nano httpx-toolkit"
+NESSUS_ACTIVATION_CODE_FILE="nessus_activation_code.txt"
+INSTALL_EXTRA_PACKAGES="bash-completion testssl.sh gobuster curl nano httpx-toolkit feroxbuster htop bmon seclists nuclei"
 INSTALL_KALI_PACKAGES="kali-linux-core kali-linux-headless kali-tools-fuzzing kali-tools-top10 kali-tools-vulnerability kali-tools-web kali-tools-exploitation kali-tools-sniffing-spoofing"
 NESSUS_NESSUSCLI_PATH="/opt/nessus/sbin/nessuscli"
 NESSUS_PROXY_HOST="127.0.0.1"
@@ -56,7 +56,7 @@ echo -ne "$NESSUS_PASSWORD\n$NESSUS_PASSWORD\ny\n\ny\n" | "$NESSUS_NESSUSCLI_PAT
 echo -e "\n"
 
 echo_dark_yellow "Registering and updating Nessus online...\n"
-"$NESSUS_NESSUSCLI_PATH" fetch --register "$NESSUS_ACTIVATION_CODE"
+"$NESSUS_NESSUSCLI_PATH" fetch --register "$(echo -n $(cat $NESSUS_ACTIVATION_CODE_FILE))"
 echo -e "\n"
 
 if [ "$NESSUS_SET_PROXY" = true ]; then
